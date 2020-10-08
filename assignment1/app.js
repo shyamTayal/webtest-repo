@@ -4,24 +4,30 @@
 angular.module('LunchCheck', [])
 
 .controller('LunchCheckController', LunchCheckController);
-
-function LunchCheckController($scope,$injector) {
+LunchCheckController.$inject=['$scope'];
+function LunchCheckController($scope) {
     $scope.name = "";
-    var listName = $scope.name.split(',');
     $scope.message = "";
 
     $scope.displayMessage = function () {
-        var count = 0;
-        count = listName.length;
-        if(count == 0){
-            $scope.message =  "Empty!";
+        var count = noItem();
+        if(count === 0){
+            $scope.message =  "Please enter data first";
         } else if(count <= 3 && count > 0){
             $scope.message =  "Enjoy!";
         } else if(count > 3){
             $scope.message =  "Too much!";
         }
     };
-    console.log($injector.annotate(LunchCheckController));
+    function noItem(){
+    var itemarray = $scope.name.split(",");
+    var no_of_item =  itemarray.length;
+    for(var i=0;i<itemarray.length;i++){
+        if(itemarray[i]==="")
+            no_of_item--;
+    }
+    return no_of_item;
+}
 };
 
 })();
